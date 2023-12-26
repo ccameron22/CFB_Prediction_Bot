@@ -10,11 +10,16 @@ def jprint(obj):
     text = json.dumps(obj, sort_keys=True, indent=4)
     print(text)
 
+year = input("Enter year: ")
+week = input("Enter week: ")
+seasonType = input("Enter 'regular' or 'post': ")
+team = input("Enter team name: ")
+
 parameters = {
-    "year": 2023,
-    "week": 1,
-    "seasonType": "regular",
-    "team": "alabama"
+    "year": year,
+    "week": week,
+    "seasonType": seasonType,
+    "team": team
 }
 
 response = requests.get("https://api.collegefootballdata.com/games", headers=headers, params=parameters)
