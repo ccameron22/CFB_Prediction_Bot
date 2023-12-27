@@ -33,8 +33,9 @@ def GameResults():
     # Convert json to human readable format
     jprint(response.json())
 
+    # Get list
     data = response.json()
-
+    # Extract data for database
     for d in data:
         home_team = d['home_team']
         home_points = d['home_points']
