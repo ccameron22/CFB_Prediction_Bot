@@ -4,7 +4,7 @@ import json
 
 
 # Authentication credentials for API request
-headers = {"Authorization": "Bearer xmp7pWvJT4r2fqy2jKYne3JZUojqOEC7l0Obn1Kq33Zkp/yxXIGS4nlxT9ZtIn/y"}
+headers = {"Authorization": "Your Key"}
 
 # Convert to readable format
 def jprint(obj):
