@@ -4,7 +4,7 @@ import json
 
 
 # Authentication credentials for API request
-headers = {"Authorization": "Your Key"}
+headers = {"Authorization": "Your Token"}
 
 # Convert to readable format
 def jprint(obj):
@@ -26,6 +26,7 @@ parameters = {
     "team": "alabama"
 }
 
+# Function to call game results from API
 def GameResults():
     # Make request to API for data in json format and print status code
     response = requests.get("https://api.collegefootballdata.com/games", headers=headers, params=parameters)
@@ -41,7 +42,23 @@ def GameResults():
         home_points = d['home_points']
         away_team = d['away_team']
         away_score = d['away_points']
+        game_id = d['id']
+    return game_id
+
+
+# Function to call game statistics from API
+def GameStatisctics(game_id):
+    print(game_id)
+    response = requests.get("https://api.collegefootballdata.com/game/box/advanced", headers=headers, params={"gameId": game_id})
+    print(response.status_code)
+    # Convert json to human readable format
+    jprint(response.json())
 
 
 if __name__ == '__main__':
-  GameResults()
+    # Call GameResults function and capture Game ID
+    # to pass to GameStatistics function
+    test = GameResults()
+    print()
+    print()
+    GameStatisctics(test)
