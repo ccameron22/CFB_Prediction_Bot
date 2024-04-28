@@ -62,11 +62,6 @@ def GameResults():
 
     df.columns = ['GameID', home_team, away_team]
 
-    # Create a new row from the current game data
-    newFrame = pd.DataFrame(columns=['Opponent', 'Conference', 'Outcome', 'Margin'])
-    newFrame = newFrame.append(
-        {"Opponent": away_team, "Conference": away_conference, "Outcome": outcome, "Margin": margin}, ignore_index=True)
-
     # Check if the team folder exists, create if not
     folder_name = os.path.join("Teams", home_team)
     if not os.path.exists(folder_name):
@@ -75,11 +70,16 @@ def GameResults():
     filename = os.path.join(folder_name, f"{date}.csv")
     # If the file already exists, load, add the row, save
     if os.path.exists(filename):
+        # Create a new row from the current game data
+        newFrame = {"Opponent": away_team, "Conference": away_conference, "Outcome": outcome, "Margin": margin}
         existing = pd.read_csv(filename)
         update = existing.append(newFrame, ignore_index=True)
         update.to_csv(filename, index=False)
     # If not, create, add the row, save
     else:
+        # Create a new row from the current game data
+        newFrame = pd.DataFrame(
+            {"Opponent": [away_team], "Conference": [away_conference], "Outcome": [outcome], "Margin": [margin]})
         newFrame.to_csv(filename, index=False)
 
     #df.to_csv('C:/Temp/PandasExport.csv', index=False)
