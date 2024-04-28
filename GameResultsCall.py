@@ -7,7 +7,7 @@ import os
 
 
 # Authentication credentials for API request
-headers = {"Authorization": "Your Token Here"}
+headers = {"Authorization": "Bearer xmp7pWvJT4r2fqy2jKYne3JZUojqOEC7l0Obn1Kq33Zkp/yxXIGS4nlxT9ZtIn/y"}
 
 # Convert to readable format
 def jprint(obj):
@@ -25,7 +25,7 @@ def jprint(obj):
 year = 2023
 week = 1
 seasonType = 'regular'
-team = 'Team Name Here'
+team = 'alabama'
 
 parameters = {
     "year": year,
@@ -53,6 +53,8 @@ def GameResults():
         home_team = d['home_team']
     home_team = home_team.lower()
     # Extract data for database
+    # If the team that was pulled for is the away team, flip the values to
+    # keep consistent with the script
     if home_team == team:
         for d in data:
             home_team = d['home_team']
