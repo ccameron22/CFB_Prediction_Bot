@@ -1,4 +1,4 @@
-import csv
+import sys
 
 import requests
 import json
@@ -13,7 +13,11 @@ headers = {"Authorization": "Bearer xmp7pWvJT4r2fqy2jKYne3JZUojqOEC7l0Obn1Kq33Zk
 def jprint(obj):
     # create a formatted string of the Python JSON object
     text = json.dumps(obj, sort_keys=True, indent=4)
-    print(text)
+    #print(text)
+    if text == '[]':
+        return 0
+    else:
+        return 1
 
 # Get user input for parameters
 #year = input("Enter year: ")
@@ -40,11 +44,17 @@ def GameResults():
     # Make request to API for data in json format and print status code
     response = requests.get("https://api.collegefootballdata.com/games", headers=headers, params=parameters)
     print(response.status_code)
+    print(response)
+
     # Convert json to human readable format
-    jprint(response.json())
+    # jprint(response.json())
+    # Check if the json is empty; Empty = bye week, return 0 and skip the rest of the function
+    if jprint(response.json()) == 0:
+        print('No Game')
+        return 0
 
     # Deprecated; Used for testing
-    df = pd.DataFrame(columns=['GameID', 'Home_Team', 'Away_Team'])
+    # df = pd.DataFrame(columns=['GameID', 'Home_Team', 'Away_Team'])
 
 
     # Get list
@@ -97,12 +107,9 @@ def GameResults():
         # Read the file and create the new row
         existing = pd.read_csv(filename)
         newFrame = pd.DataFrame(
-            {"Opponent": [away_team], "Conference": [away_conference], "Outcome": [outcome], "Margin": [margin]})
-        # Check if the new row is already in the file; If not, add it and save
-        row_exists = newFrame.isin(existing).all(axis=1).any()
-        if not row_exists:
-            update = existing.append(newFrame, ignore_index=True)
-            update.to_csv(filename, index=False)
+            {"Opponent": away_team, "Conference": away_conference, "Outcome": outcome, "Margin": margin}, index=[0])
+        update = existing.append(newFrame, ignore_index=True)
+        update.to_csv(filename, index=False)
     # If the file doesn't exist:
     else:
         # Create a new row from the current game data and save as a csv
@@ -130,4 +137,5 @@ if __name__ == '__main__':
     test = GameResults()
     print()
     print()
-    #GameStatisctics(test)
+    #if test != 0:
+        #GameStatisctics(test)
