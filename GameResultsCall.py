@@ -13,7 +13,7 @@ headers = {"Authorization": "Your token here"}
 def jprint(obj):
     # create a formatted string of the Python JSON object
     text = json.dumps(obj, sort_keys=True, indent=4)
-    #print(text)
+    print(text)
     if text == '[]':
         return 0
     else:
@@ -27,13 +27,13 @@ def jprint(obj):
 
 
 # Function to call game results from API
-def GameResults(x):
+def GameResults(week, year, season, team):
     # Hardcoded parameters for testing
     # Week is now filled by argument from calling script. Other parameters will eventually be changed
-    year = 2023
-    week = x
-    seasonType = 'regular'
-    team = 'alabama'
+    year = year
+    week = week
+    seasonType = season
+    team = team
 
     parameters = {
         "year": year,
@@ -87,6 +87,7 @@ def GameResults(x):
         outcome = 'F'
     margin = home_score - away_score
     season = str(d['season'])
+    season_type = d['season_type']
     #date = d['start_date'][:10]
     game_id = d['id']
 
@@ -108,14 +109,14 @@ def GameResults(x):
         # Read the file and create the new row
         existing = pd.read_csv(filename)
         newFrame = pd.DataFrame(
-            {"Opponent": away_team, "Conference": away_conference, "Outcome": outcome, "Margin": margin}, index=[0])
+            {"Opponent": away_team, "Conference": away_conference, "Outcome": outcome, "Margin": margin, "Season": season_type}, index=[0])
         update = existing.append(newFrame, ignore_index=True)
         update.to_csv(filename, index=False)
     # If the file doesn't exist:
     else:
         # Create a new row from the current game data and save as a csv
         newFrame = pd.DataFrame(
-            {"Opponent": [away_team], "Conference": [away_conference], "Outcome": [outcome], "Margin": [margin]})
+            {"Opponent": [away_team], "Conference": [away_conference], "Outcome": [outcome], "Margin": [margin], "Season": [season_type]})
         newFrame.to_csv(filename, index=False)
 
     #df.to_csv('C:/Temp/PandasExport.csv', index=False)
@@ -133,10 +134,13 @@ def GameStatisctics(game_id):
 
 
 if __name__ == '__main__':
-    x = sys.argv[1]
+    week = sys.argv[1]
+    year = sys.argv[2]
+    season = sys.argv[3]
+    team = sys.argv[4]
     # Call GameResults function and capture Game ID
     # to pass to GameStatistics function
-    test = GameResults(x)
+    test = GameResults(week, year, season, team)
     print()
     print()
     #if test != 0:
