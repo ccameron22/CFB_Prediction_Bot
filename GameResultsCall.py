@@ -7,7 +7,7 @@ import os
 
 
 # Authentication credentials for API request
-headers = {"Authorization": "Bearer xmp7pWvJT4r2fqy2jKYne3JZUojqOEC7l0Obn1Kq33Zkp/yxXIGS4nlxT9ZtIn/y"}
+headers = {"Authorization": "Your token here"}
 
 # Convert to readable format
 def jprint(obj):
@@ -25,22 +25,23 @@ def jprint(obj):
 #seasonType = input("Enter 'regular' or 'postseason': ")
 #team = input("Enter team name: ")
 
-# Hardcoded parameters for testing
-year = 2023
-week = 1
-seasonType = 'regular'
-team = 'alabama'
-
-parameters = {
-    "year": year,
-    "week": week,
-    "seasonType": seasonType,
-    "team": team
-}
-
 
 # Function to call game results from API
-def GameResults():
+def GameResults(x):
+    # Hardcoded parameters for testing
+    # Week is now filled by argument from calling script. Other parameters will eventually be changed
+    year = 2023
+    week = x
+    seasonType = 'regular'
+    team = 'alabama'
+
+    parameters = {
+        "year": year,
+        "week": week,
+        "seasonType": seasonType,
+        "team": team
+    }
+
     # Make request to API for data in json format and print status code
     response = requests.get("https://api.collegefootballdata.com/games", headers=headers, params=parameters)
     print(response.status_code)
@@ -132,9 +133,10 @@ def GameStatisctics(game_id):
 
 
 if __name__ == '__main__':
+    x = sys.argv[1]
     # Call GameResults function and capture Game ID
     # to pass to GameStatistics function
-    test = GameResults()
+    test = GameResults(x)
     print()
     print()
     #if test != 0:
